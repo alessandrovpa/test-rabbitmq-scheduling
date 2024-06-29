@@ -1,0 +1,68 @@
+{
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "BMfxN8drrYcIqXZMr+pWTpDT0nMcOagMduLX0bjr4jwud/pN",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["administrator"],
+      "limits": {}
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "queues": [
+    {
+      "name": "test-queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-mode": "lazy",
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "exchange-scheduler",
+      "vhost": "/",
+      "type": "x-delayed-message",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {
+        "x-delayed-type": "direct"
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "amq.direct",
+      "vhost": "/",
+      "destination": "test-queue",
+      "destination_type": "queue",
+      "routing_key": "direct-message",
+      "arguments": {}
+    },
+    {
+      "source": "exchange-scheduler",
+      "vhost": "/",
+      "destination": "test-queue",
+      "destination_type": "queue",
+      "routing_key": "scheduled-message",
+      "arguments": {}
+    }
+  ]
+}

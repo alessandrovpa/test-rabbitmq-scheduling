@@ -1,0 +1,1 @@
+Projeto feito para testar o plugin de scheduling do RabbitMq
